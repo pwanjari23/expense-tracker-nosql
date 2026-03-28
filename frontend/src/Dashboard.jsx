@@ -162,12 +162,12 @@ const Dashboard = () => {
             <ArrowUpRight size={80} />
           </div>
           <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">
-            Monthly Budget
+            Financial Strategy
           </p>
-          <h3 className="text-3xl font-serif">₹45,000.00</h3>
+          <h3 className="text-3xl font-serif">50 • 30 • 20 Rule</h3>
           <div className="mt-4 flex items-center gap-2 text-[#00D54B] text-xs font-bold">
             <span className="bg-[#00D54B]/10 px-2 py-0.5 rounded-md">
-              82% Used
+              Needs • Wants • Save
             </span>
           </div>
         </div>
@@ -181,7 +181,7 @@ const Dashboard = () => {
           </h3>
           <div className="mt-4 flex items-center gap-2 text-red-400 text-xs font-bold">
             <span className="bg-red-400/10 px-2 py-0.5 rounded-md">
-              +12.5% from last month
+              See where your money goes
             </span>
           </div>
         </div>
@@ -253,40 +253,39 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-[#002111] rounded-3xl border border-white/5 p-6">
-          <h4 className="text-lg font-bold mb-6 flex items-center gap-2">
-            <Trophy size={18} className="text-yellow-500" /> Leaderboard
+        <div className="bg-[#002111] rounded-3xl border border-white/5 p-6 shadow-xl">
+          <h4 className="text-lg font-bold mb-6 flex items-center gap-2 text-emerald-400">
+            <Sparkles size={18} className="text-yellow-500" /> Smart Budgeting
           </h4>
-          <div className="space-y-6">
+
+          <div className="space-y-5">
             {[
-              { rank: 1, user: "Arjun S.", score: "98 pts", color: "#00D54B" },
-              { rank: 2, user: "Priya K.", score: "92 pts", color: "#8b5cf6" },
-            ].map((user, i) => (
-              <div key={i} className="flex items-center gap-4">
-                <span className="text-xs font-bold text-gray-500 w-4">
-                  #{user.rank}
-                </span>
-                <div className="flex-1">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-xs font-bold text={user.user}">
-                      {user.user}
-                    </span>
-                    <span className="text-[10px] font-bold text-gray-400">
-                      {user.score}
-                    </span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all"
-                      style={{
-                        width: user.score.replace(" pts", "%"),
-                        backgroundColor: user.color,
-                      }}
-                    />
-                  </div>
-                </div>
+              "A penny saved is a penny earned",
+              "Don't save what is left after spending",
+              "Beware of little expenses; a small leak sinks a ship",
+              "Money grows on the tree of patience",
+            ].map((tip, i) => (
+              <div
+                key={i}
+                className="group flex items-start gap-3 transition-all hover:translate-x-1"
+              >
+                <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+                <p className="text-xs leading-relaxed font-medium text-gray-300 group-hover:text-white">
+                  {tip}
+                </p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-white/5">
+            <div className="bg-white/5 rounded-2xl p-4 text-center">
+              <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-1 font-bold">
+                Daily Goal
+              </p>
+              <p className="text-sm font-semibold text-emerald-400 underline underline-offset-4 decoration-emerald-500/30">
+                Stay under ₹1,200 today
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -317,10 +316,13 @@ const Dashboard = () => {
           <h2 className="text-2xl font-bold">Transaction History</h2>
           <div className="flex gap-2">
             <button className="px-4 py-2 bg-[#001A0E] border border-white/5 rounded-xl text-xs font-bold hover:bg-white/5">
-              Filter
+              Daily
             </button>
             <button className="px-4 py-2 bg-[#001A0E] border border-white/5 rounded-xl text-xs font-bold hover:bg-white/5">
-              Export CSV
+              Weekly
+            </button>
+            <button className="px-4 py-2 bg-[#001A0E] border border-white/5 rounded-xl text-xs font-bold hover:bg-white/5">
+              Monthly
             </button>
           </div>
         </div>
