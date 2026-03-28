@@ -9,7 +9,7 @@ exports.addExpense = async (req, res) => {
 
     const expense = new Expense({
       customId: newId,
-      userId: req.user, // associate expense with logged-in user
+      userId: req.user, 
       title,
       amount,
       category,

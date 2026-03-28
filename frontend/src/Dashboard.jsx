@@ -217,33 +217,39 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="space-y-4">
-            {[...expenses]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // latest first
-              .slice(0, 3) // only 3 items
-              .map((item, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center p-3 hover:bg-white/5 rounded-2xl transition-colors cursor-pointer border border-transparent hover:border-white/5"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-[#001A0E] rounded-full flex items-center justify-center text-[#00D54B] font-bold">
-                      {item.title[0]}
+            {expenses.length === 0 ? (
+              <p className="text-gray-400 text-center py-4">
+                No recent expenses yet. Add some to see here!
+              </p>
+            ) : (
+              [...expenses]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // latest first
+                .slice(0, 3) // only 3 items
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center p-3 hover:bg-white/5 rounded-2xl transition-colors cursor-pointer border border-transparent hover:border-white/5"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-[#001A0E] rounded-full flex items-center justify-center text-[#00D54B] font-bold">
+                        {item.title[0]}
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm">{item.title}</p>
+                        <p className="text-[11px] text-gray-500 font-medium">
+                          {item.category} •{" "}
+                          {new Date(
+                            item.createdAt || item.date,
+                          ).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-bold text-sm">{item.title}</p>
-                      <p className="text-[11px] text-gray-500 font-medium">
-                        {item.category} •{" "}
-                        {new Date(
-                          item.createdAt || item.date,
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
+                    <p className="font-bold text-sm text-gray-200">
+                      - ₹{item.amount}
+                    </p>
                   </div>
-                  <p className="font-bold text-sm text-gray-200">
-                    - ₹{item.amount}
-                  </p>
-                </div>
-              ))}
+                ))
+            )}
           </div>
         </div>
 
@@ -319,141 +325,151 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5">
-          <span>Expense</span>
-          <span>Category</span>
-          <span>Date</span>
-          <span className="text-right">Amount</span>
-          <span className="text-right">Actions</span>
-        </div>
+        {expenses.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-400 mb-4">
+              No expenses yet. Add some to see here!
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-5 px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5">
+              <span>Expense</span>
+              <span>Category</span>
+              <span>Date</span>
+              <span className="text-right">Amount</span>
+              <span className="text-right">Actions</span>
+            </div>
 
-        <div className="divide-y divide-white/5">
-          {currentExpenses.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-5 px-4 py-5 text-sm items-center hover:bg-white/[0.02] transition-colors"
-            >
-              {/* Title */}
-              {editId === item.customId ? (
-                <input
-                  className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
-                  value={editData.title}
-                  onChange={(e) =>
-                    setEditData({ ...editData, title: e.target.value })
-                  }
-                />
-              ) : (
-                <span className="font-bold">{item.title}</span>
-              )}
+            <div className="divide-y divide-white/5">
+              {currentExpenses.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-5 px-4 py-5 text-sm items-center hover:bg-white/[0.02] transition-colors"
+                >
+                  {/* Title */}
+                  {editId === item.customId ? (
+                    <input
+                      className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
+                      value={editData.title}
+                      onChange={(e) =>
+                        setEditData({ ...editData, title: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <span className="font-bold">{item.title}</span>
+                  )}
 
-              {editId === item.customId ? (
-                <input
-                  className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
-                  value={editData.category}
-                  onChange={(e) =>
-                    setEditData({ ...editData, category: e.target.value })
-                  }
-                />
-              ) : (
-                <span className="text-gray-400">{item.category}</span>
-              )}
+                  {editId === item.customId ? (
+                    <input
+                      className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
+                      value={editData.category}
+                      onChange={(e) =>
+                        setEditData({ ...editData, category: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <span className="text-gray-400">{item.category}</span>
+                  )}
 
-              <span className="text-gray-400">
-                {new Date(item.createdAt || item.date).toLocaleDateString()}
+                  <span className="text-gray-400">
+                    {new Date(item.createdAt || item.date).toLocaleDateString()}
+                  </span>
+
+                  {editId === item.customId ? (
+                    <input
+                      type="number"
+                      className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
+                      value={editData.amount}
+                      onChange={(e) =>
+                        setEditData({ ...editData, amount: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <span className="text-right font-bold text-[#00D54B]">
+                      - ₹{item.amount}
+                    </span>
+                  )}
+
+                  <div className="flex gap-2 justify-end">
+                    {editId === item.customId ? (
+                      <>
+                        <button
+                          onClick={() => {
+                            handleUpdateExpense(item.customId, editData);
+                            setEditId(null);
+                          }}
+                          className="text-green-400 text-xs"
+                        >
+                          <Save size={16} />
+                        </button>
+                        <button
+                          onClick={() => setEditId(null)}
+                          className="text-gray-400 text-xs"
+                        >
+                          <X size={16} />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            setEditId(item.customId);
+                            setEditData({
+                              title: item.title,
+                              amount: item.amount,
+                              category: item.category,
+                            });
+                          }}
+                          className="text-blue-400 text-xs"
+                        >
+                          <Pencil size={16} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteExpense(item.customId)}
+                          className="text-red-400 text-xs"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between items-center mt-6">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-xl text-xs font-bold ${
+                  currentPage === 1
+                    ? "bg-white/10 text-gray-400 cursor-not-allowed"
+                    : "bg-[#001A0E] text-white hover:bg-white/5"
+                }`}
+              >
+                Previous
+              </button>
+
+              <span className="text-xs text-gray-400">
+                Page {currentPage} of {totalPages}
               </span>
 
-              {editId === item.customId ? (
-                <input
-                  type="number"
-                  className="bg-[#001A0E] border border-white/5 rounded-xl px-4 py-3"
-                  value={editData.amount}
-                  onChange={(e) =>
-                    setEditData({ ...editData, amount: e.target.value })
-                  }
-                />
-              ) : (
-                <span className="text-right font-bold text-[#00D54B]">
-                  - ₹{item.amount}
-                </span>
-              )}
-
-              <div className="flex gap-2 justify-end">
-                {editId === item.customId ? (
-                  <>
-                    <button
-                      onClick={() => {
-                        handleUpdateExpense(item.customId, editData);
-                        setEditId(null);
-                      }}
-                      className="text-green-400 text-xs"
-                    >
-                      <Save size={16} />
-                    </button>
-                    <button
-                      onClick={() => setEditId(null)}
-                      className="text-gray-400 text-xs"
-                    >
-                      <X size={16} />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        setEditId(item.customId);
-                        setEditData({
-                          title: item.title,
-                          amount: item.amount,
-                          category: item.category,
-                        });
-                      }}
-                      className="text-blue-400 text-xs"
-                    >
-                      <Pencil size={16} />
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteExpense(item.customId)}
-                      className="text-red-400 text-xs"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </>
-                )}
-              </div>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-xl text-xs font-bold ${
+                  currentPage === totalPages
+                    ? "bg-white/10 text-gray-400 cursor-not-allowed"
+                    : "bg-[#001A0E] text-white hover:bg-white/5"
+                }`}
+              >
+                Next
+              </button>
             </div>
-          ))}
-        </div>
-
-        <div className="flex justify-between items-center mt-6">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-xl text-xs font-bold ${
-              currentPage === 1
-                ? "bg-white/10 text-gray-400 cursor-not-allowed"
-                : "bg-[#001A0E] text-white hover:bg-white/5"
-            }`}
-          >
-            Previous
-          </button>
-
-          <span className="text-xs text-gray-400">
-            Page {currentPage} of {totalPages}
-          </span>
-
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-xl text-xs font-bold ${
-              currentPage === totalPages
-                ? "bg-white/10 text-gray-400 cursor-not-allowed"
-                : "bg-[#001A0E] text-white hover:bg-white/5"
-            }`}
-          >
-            Next
-          </button>
-        </div>
+          </>
+        )}
       </div>
     );
   };
@@ -487,39 +503,50 @@ const Dashboard = () => {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-bold">Reports</h2>
 
-          <button
-            onClick={handleDownloadPDF}
-            className="px-4 py-2 bg-[#00D54B] text-[#002111] rounded-xl text-xs font-bold hover:brightness-110"
-          >
-            Download PDF
-          </button>
-        </div>
-
-        {/* Table Header */}
-        <div className="grid grid-cols-4 px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5">
-          <span>Title</span>
-          <span>Category</span>
-          <span>Date</span>
-          <span className="text-right">Amount</span>
-        </div>
-
-        <div className="divide-y divide-white/5">
-          {expenses.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-4 px-4 py-5 text-sm items-center hover:bg-white/[0.02]"
+          {expenses.length > 0 && (
+            <button
+              onClick={handleDownloadPDF}
+              className="px-4 py-2 bg-[#00D54B] text-[#002111] rounded-xl text-xs font-bold hover:brightness-110"
             >
-              <span className="font-bold">{item.title}</span>
-              <span className="text-gray-400">{item.category}</span>
-              <span className="text-gray-400">
-                {new Date(item.createdAt || item.date).toLocaleDateString()}
-              </span>
-              <span className="text-right font-bold text-[#00D54B]">
-                ₹ {item.amount}
-              </span>
-            </div>
-          ))}
+              Download PDF
+            </button>
+          )}
         </div>
+
+        {expenses.length === 0 ? (
+          <div className="text-center py-20 text-gray-400 font-medium">
+            No data available. Add some expense to generate reports.
+          </div>
+        ) : (
+          <>
+            {/* Table Header */}
+            <div className="grid grid-cols-4 px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5">
+              <span>Title</span>
+              <span>Category</span>
+              <span>Date</span>
+              <span className="text-right">Amount</span>
+            </div>
+
+            {/* Table Rows */}
+            <div className="divide-y divide-white/5">
+              {expenses.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-4 px-4 py-5 text-sm items-center hover:bg-white/[0.02]"
+                >
+                  <span className="font-bold">{item.title}</span>
+                  <span className="text-gray-400">{item.category}</span>
+                  <span className="text-gray-400">
+                    {new Date(item.createdAt || item.date).toLocaleDateString()}
+                  </span>
+                  <span className="text-right font-bold text-[#00D54B]">
+                    ₹ {item.amount}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   };
@@ -649,98 +676,71 @@ const Dashboard = () => {
           <Trophy className="text-yellow-500" /> Spending Leaderboard
         </h2>
 
-        {topCategory && (
-          <div className="mb-6 p-4 rounded-2xl bg-[#00D54B]/10 border border-[#00D54B]/20">
-            <p className="text-sm text-[#00D54B] font-semibold">
-              💡 Smart Insight
-            </p>
-            <p className="text-sm text-gray-300 mt-1">{suggestion}</p>
+        {leaderboard.length === 0 ? (
+          <div className="text-center py-20 text-gray-400 font-medium">
+            No data available. Add some expense to see the leaderboard.
           </div>
-        )}
+        ) : (
+          <>
+            {topCategory && (
+              <div className="mb-6 p-4 rounded-2xl bg-[#00D54B]/10 border border-[#00D54B]/20">
+                <p className="text-sm text-[#00D54B] font-semibold">
+                  💡 Smart Insight
+                </p>
+                <p className="text-sm text-gray-300 mt-1">{suggestion}</p>
+              </div>
+            )}
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-[#001A0E] p-5 rounded-2xl">
-            <h3 className="text-sm font-bold mb-4 text-gray-300">
-              Category Spending
-            </h3>
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-[#001A0E] p-5 rounded-2xl">
+                <h3 className="text-sm font-bold mb-4 text-gray-300">
+                  Category Spending
+                </h3>
 
-            <div className="space-y-4">
-              {leaderboard.map((item, index) => {
-                const percentage = (item.totalAmount / maxAmount) * 100;
+                <div className="space-y-4">
+                  {leaderboard.map((item, index) => {
+                    const percentage = (item.totalAmount / maxAmount) * 100;
 
-                return (
-                  <div key={index}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span>{item._id}</span>
-                      <span>₹{item.totalAmount}</span>
-                    </div>
+                    return (
+                      <div key={index}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>{item._id}</span>
+                          <span>₹{item.totalAmount}</span>
+                        </div>
 
-                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${percentage}%`,
-                          backgroundColor: COLORS[index % COLORS.length],
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="bg-[#001A0E] p-5 rounded-2xl flex justify-center items-center">
-            <PieChart width={250} height={250}>
-              <Pie
-                data={leaderboard}
-                dataKey="totalAmount"
-                nameKey="_id"
-                outerRadius={90}
-              >
-                {leaderboard.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </div>
-        </div>
-
-        {/* 📊 Leaderboard List */}
-        {/* <div className="space-y-6">
-          {leaderboard.map((item, index) => {
-            const percentage = (item.totalAmount / maxAmount) * 100;
-
-            return (
-              <div key={index} className="flex items-center gap-4">
-                <span className="text-xs font-bold text-gray-500 w-4">
-                  #{index + 1}
-                </span>
-
-                <div className="flex-1">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-bold">
-                      {item._id} {index === 0 && "⚠️"}
-                      {index === leaderboard.length - 1 && "✅"}
-                    </span>
-
-                    <span className="text-xs text-gray-400">
-                      ₹{item.totalAmount.toLocaleString("en-IN")}
-                    </span>
-                  </div>
-
-                  <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-[#00D54B] rounded-full"
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
+                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{
+                              width: `${percentage}%`,
+                              backgroundColor: COLORS[index % COLORS.length],
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            );
-          })}
-        </div> */}
+
+              <div className="bg-[#001A0E] p-5 rounded-2xl flex justify-center items-center">
+                <PieChart width={250} height={250}>
+                  <Pie
+                    data={leaderboard}
+                    dataKey="totalAmount"
+                    nameKey="_id"
+                    outerRadius={90}
+                  >
+                    {leaderboard.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   };
@@ -776,9 +776,9 @@ const Dashboard = () => {
         </nav>
 
         <div className="pt-6 border-t border-white/5 space-y-1">
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-400 hover:text-white transition-colors">
+          {/* <button className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-400 hover:text-white transition-colors">
             <Settings size={18} /> Settings
-          </button>
+          </button> */}
           <button
             className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-red-400 hover:bg-red-400/10 rounded-xl transition-all"
             onClick={handleLogout}

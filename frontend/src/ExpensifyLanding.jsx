@@ -275,23 +275,6 @@ const ExpensifyLanding = () => {
           </div>
         </div>
       )}
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes slide-in {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
-        }
-        .animate-bounce-slow { animation: bounce-slow 4s ease-in-out infinite; }
-        .animate-slide-in { animation: slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-      `,
-        }}
-      />
     </div>
   );
 };
