@@ -4,6 +4,8 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const expenseRoutes = require("./routes/expenseRoutes");
 const authRoutes = require("./routes/authRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+const leaderboardRoutes = require("./routes/leaderboardRoutes");
 
 dotenv.config();
 
@@ -14,6 +16,8 @@ app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
+app.use("/api/callAi", aiRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 connectDB();
 

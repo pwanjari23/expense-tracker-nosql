@@ -25,8 +25,10 @@ const ExpensifyLanding = () => {
   };
 
   const handleSignup = async () => {
+    const token = localStorage.getItem("token");
     try {
       const res = await axios.post("http://localhost:5000/api/auth/signup", {
+        headers: { Authorization: `Bearer ${token}` },
         name,
         email,
         phone,
@@ -43,8 +45,10 @@ const ExpensifyLanding = () => {
   };
 
   const handleLogin = async () => {
+    const token = localStorage.getItem("token");
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
+        headers: { Authorization: `Bearer ${token}` },
         email: identifier,
         phone: identifier,
       });
